@@ -34,10 +34,25 @@ def start_battle(player)
         else            
         end
 
-        current_spell = enemy.spells.sample
-        puts "#{enemy.name} casts #{current_spell.name} on #{player.name}!"
-        enemy.cast_spell(player, current_spell)
-        player.show_player
+        if (enemy.alive)
+            current_spell = enemy.spells.sample
+            puts "#{enemy.name} casts #{current_spell.name} on #{player.name}!"
+            enemy.cast_spell(player, current_spell)
+            player.show_player
+        else
+            puts "#{enemy.name} has died!"
+            player.collect_loot(enemy.drop_loot)
+            player.show_player
+            puts "Fight another enemy? y/n"
+            res = gets.chomp.downcase
+            if res == "n"
+                battle_over = true
+            else
+                start_battle(player)
+                battle_over = true
+            end
+
+        end
     end
 end
 
@@ -53,6 +68,7 @@ while (!exit_game)
         case response
         when "sleep"
             player.rest
+            continue = false
         when "battle"
             start_battle(player)
             continue = false
