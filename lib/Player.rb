@@ -75,7 +75,9 @@ class Player
 
     def collect_loot(loot)
        @xp += loot[:xp]
-       @drops << loot[:drops] if loot[:drops] != nil
+       loot[:drops].each do |item|
+        @inventory << item
+       end
     end
 
     def show_inventory

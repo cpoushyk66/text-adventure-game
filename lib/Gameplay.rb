@@ -1,12 +1,13 @@
 require_relative "./Player.rb"
 require_relative "./Enemy_Data.rb"
+require_relative "./Shop.rb"
 require "pry"
 
 
 enemy = nil
 
 #player
-player = Player.new("Adventurer", 30, 30, 5, [$spell_list[:fire_spell], $spell_list[:water_blast]], 100, nil)
+player = Player.new("Adventurer", 30, 30, 5, [$spell_list[:fire_spell], $spell_list[:water_blast]], 100, [$item_list[$item_list.keys.sample]])
 
 #handle responses
 def start_battle(player)
@@ -72,11 +73,14 @@ while (!exit_game)
         when "battle"
             start_battle(player)
             continue = false
+        when "shop"
+            Shop.start(player)
+            continue = false
         when "leave"
             exit_game = true
             continue = false
         else
-            puts "Unknown Command!"
+            puts "Unknown Command: #{response}"
         end
     end
 end
