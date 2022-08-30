@@ -11,6 +11,9 @@ def drench(target)
     target.current_mp = (target.current_mp / 2)
 end
 
+def blitz(target)
+    puts "#{target.name} was blitzed!"
+end
 
 $spell_list = {
     fire_spell: Spell.new("Fire Spell", 2, 4, :burn),

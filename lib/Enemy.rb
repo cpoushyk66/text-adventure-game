@@ -73,9 +73,11 @@ class Enemy
     end
 
     def drop_loot
-        puts self.drops
+        self.drops.each do |item|
+            puts item.name
+        end
         puts self.xp
-       {drops: @drops, xp: @xp}
+       {drops: self.drops, xp: self.xp}
     end
 
     def show_enemy
