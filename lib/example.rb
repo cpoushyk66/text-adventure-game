@@ -65,6 +65,7 @@ while (!exit_game)
             player.rest
         when "battle"
             start_battle(enemies, player)
+            continue = false
         when "leave"
             exit_game = true
             continue = false
