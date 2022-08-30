@@ -75,7 +75,7 @@ class Enemy
     def drop_loot
         puts self.drops
         puts self.xp
-       [drops: @drops, xp: @xp]
+       {drops: @drops, xp: @xp}
     end
 
     def show_enemy

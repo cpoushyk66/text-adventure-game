@@ -45,6 +45,11 @@ class Player
 
     #Health and Damage Methods
 
+    def rest
+        self.current_hp = self.max_hp
+        self.current_mp = self.max_mp
+    end
+
     def heal(health)
         @current_hp += health
         
@@ -69,8 +74,8 @@ class Player
     end
 
     def collect_loot(loot)
-       @xp =+ loot[:xp]
-       @drops << loot[:drops] if :drops != nil
+       @xp += loot[:xp]
+       @drops << loot[:drops] if loot[:drops] != nil
     end
 
     def show_inventory
