@@ -1,60 +1,21 @@
 
 class Player
 
-    def initialize(name = "Enemy", max_hp = 10, mp = 0, armor = 0, spells = [], xp = 0, inventory = [])
+    attr_reader :name, :max_hp, :max_mp, :alive, :spells, :drops
+    attr_accessor :armor, :xp, :current_hp, :current_mp
+
+    def initialize(name = "Enemy", max_hp = 10, max_mp = 0, armor = 0, spells = [], xp = 0, inventory = [])
         @name = name
         @max_hp = max_hp
-        @mp = mp
+        @max_mp = max_mp
         @armor = armor
         @spells = spells
         @xp = xp
         @inventory = inventory
         
+        @current_mp = max_mp
         @current_hp = max_hp
         @alive = true;
-    end
-
-    #Getter Methods
-    def get_name 
-        @name
-    end
-    def get_current_hp 
-        @current_hp
-    end
-    def get_mp 
-        @mp
-    end
-    def get_armor 
-        @armor
-    end
-    def get_spells 
-        @spells
-    end
-    def get_xp 
-        @xp
-    end
-    def get_alive
-        @alive
-    end
-
-    #Setter/Adder Methods
-    def set_name(name) 
-        @name = name
-    end
-    def set_hp(hp) 
-        @hp = hp
-    end
-    def set_mp(mp) 
-        @mp = mp
-    end
-    def set_armor(armor) 
-        @armor = armor
-    end
-    def set_spells(spells) 
-        @spells = spells
-    end
-    def set_xp(xp) 
-        @xp = xp
     end
 
     #Spell Manipulation Methods
@@ -69,10 +30,14 @@ class Player
 
     def cast_spell(target, spell)
 
-        if (@mp >= spell.get_cost)
-            target.take_damage(spell.get_damage)
-            @mp -= spell.get_cost
+        if (@current_mp >= spell.cost)
+            target.take_damage(spell.damage)
+            @current_mp -= spell.cost
             spell.use_effect(target)
+
+            # if !target.alive
+            #     collect_loot(target.drop_loot)
+            # end
         else
             puts "Not enough mana!"
         end
@@ -91,6 +56,7 @@ class Player
 
     def take_damage(damage)
         @current_hp -= (damage - @armor)
+        puts "#{self.name} lost #{damage} health!"
         if (@current_hp <= 0)
             @current_hp = 0
             die
@@ -108,21 +74,27 @@ class Player
     end
 
     def show_inventory
-        puts "-------------------"
         puts "Inventory"
-        puts @inventory
-        puts "-------------------"
+        if @inventory != nil
+            @inventory.each do |item|
+                puts "-#{item.name}"
+            end
+        else
+            puts "-empty"
+        end
     end
 
     def show_player
         puts "-------------------"
         puts "Name: #{@name}"
         puts "Health: #{@current_hp} / #{@max_hp}"
-        puts "Mana: #{@mp}"
+        puts "Mana: #{@current_mp} / #{@max_mp}"
         puts "Xp: #{@xp}"
         puts "Armor: #{@armor}"
         puts "Spells:"
-        puts @spells
+        @spells.each do |spell|
+            puts "-#{spell.name}"
+        end
         show_inventory
         puts "-------------------"
     end
