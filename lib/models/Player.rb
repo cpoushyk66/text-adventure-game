@@ -1,21 +1,59 @@
 
 class Player
 
-    attr_reader :name, :max_hp, :max_mp, :alive, :spells, :drops
-    attr_accessor :armor, :xp, :current_hp, :current_mp
+    attr_reader :name, :alive, :spells, :drops, :strength, :intelligence, :stamina, :agility
+    attr_accessor :armor, :xp, :current_hp, :current_mp, :class
+    attr_accessor :max_mp, :max_hp
 
-    def initialize(name = "Enemy", max_hp = 10, max_mp = 0, armor = 0, spells = [], xp = 0, inventory = [])
-        @name = name
-        @max_hp = max_hp
-        @max_mp = max_mp
-        @armor = armor
-        @spells = spells
-        @xp = xp
-        @inventory = inventory
+    def initialize(attributes)
+        @name = attributes[:name]
+        @class = attributes[:class]
         
-        @current_mp = max_mp
+        
+        #stats
+        @strength = 1
+        @intelligence = 1
+        @stamina = 1
+        @agility = 1
+        @armor = 0
+        @spells = []
+        
+        @max_hp = 0
         @current_hp = max_hp
+        @max_mp = 0
+        @current_mp = max_mp
+        #misc
+        @inventory = []
+        @xp = 0
         @alive = true;
+    end
+
+    def strength=(value)
+        @strength = value
+        self.update_stats
+    end
+
+    def intelligence=(value)
+        @intelligence = value
+        self.update_stats
+    end
+
+    def stamina=(value)
+        @stamina = value
+        self.update_stats
+    end
+
+    def agility=(value)
+        @agility = value
+        self.update_stats
+    end
+
+
+    #Stat methods
+    def update_stats
+        self.max_hp = self.stamina * 10
+        self.max_mp = self.intelligence * 10
+        self.rest
     end
 
     #Spell Manipulation Methods
@@ -82,7 +120,7 @@ class Player
 
     def show_inventory
         puts "Inventory"
-        if @inventory != nil
+        if @inventory != []
             @inventory.each do |item|
                 puts "-#{item.name}"
             end
@@ -91,17 +129,29 @@ class Player
         end
     end
 
+    def show_spells
+        puts "Spells"
+        if self.spells != []
+            self.spells.each do |spell|
+                puts "-#{spell.name}"
+            end
+        else
+            puts "-empty"
+        end
+    end
     def show_player
         puts "-------------------"
-        puts "Name: #{@name}"
+        puts "Name: #{@name} (#{@class})"
         puts "Health: #{@current_hp} / #{@max_hp}"
         puts "Mana: #{@current_mp} / #{@max_mp}"
         puts "Xp: #{@xp}"
         puts "Armor: #{@armor}"
-        puts "Spells:"
-        @spells.each do |spell|
-            puts "-#{spell.name}"
-        end
+        puts "Stats:"
+        puts "-Strength: #{self.strength}"
+        puts "-Intelligence: #{self.intelligence}"
+        puts "-Stamina: #{self.stamina}"
+        puts "-Agility: #{self.agility}"
+        show_spells
         show_inventory
         puts "-------------------"
     end
