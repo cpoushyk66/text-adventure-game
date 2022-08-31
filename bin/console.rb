@@ -1,8 +1,4 @@
-require_relative "./Player.rb"
-require_relative "./Enemy_Data.rb"
-require_relative "./Shop.rb"
-require "pry"
-
+require_relative "../config/environment.rb"
 
 enemy = nil
 
